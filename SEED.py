@@ -1,7 +1,7 @@
 import mne
 import scipy.io
 
-from subject_file_name import *
+from SEED_subject_file_name import *
 
 """
 # use np.save to get npy files
@@ -26,11 +26,11 @@ for subject in subject_round:
                 print(f"Key: {key}, Value shape: {raw_datas[key].shape}")   # (62 channels, data point)
                 raw = raw_datas[key]
                 # do the preprocessing (but SEED seem to require any more preprocessing on our part)
-                # ch_names = ['Ch' + str(i) for i in range(1, 63)]
-                # ch_types = ['eeg'] * 62
-                # sfreq = 200
-                # info = mne.create_info(ch_names=ch_names, ch_types=ch_types, sfreq=sfreq)
-                # raw = mne.io.RawArray(raw, info)
+                ch_names = ['Ch' + str(i) for i in range(1, 63)]
+                ch_types = ['eeg'] * 62
+                sfreq = 200
+                info = mne.create_info(ch_names=ch_names, ch_types=ch_types, sfreq=sfreq)
+                raw = mne.io.RawArray(raw, info)
                 # 1. filter
                 # raw = raw.notch_filter(freqs=50)
                 # raw = raw.notch_filter(freqs=60)
