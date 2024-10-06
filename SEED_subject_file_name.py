@@ -1,4 +1,4 @@
-subject_round = [
+SEED_subject_round = [
     [
         "dujingcheng_20131027.mat",
         "dujingcheng_20131030.mat",

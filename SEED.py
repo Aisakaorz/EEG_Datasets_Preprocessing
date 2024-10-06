@@ -12,13 +12,8 @@ loaded_data = np.load('preprocessed_data.npy')
 
 """
 1. Preprocessed_EEG/: EEG raw datas
-    DE_datas -> (675, 62, 265, 5)
-        675 = 15 subjects * 15 trials * 3 rounds
-        62 = 62 channels
-        265 = 265s
-        5 = delta, theta, alpha, beta, gamma band
 """
-for subject in subject_round:
+for subject in SEED_subject_round:
     for rounds in range(3):  # 1 subject = 3 rounds
         raw_datas = scipy.io.loadmat(f'./SEED/Preprocessed_EEG/{subject[rounds]}')
         for key in raw_datas:
@@ -61,6 +56,7 @@ for key in label:
     if not key.startswith('__'):
         print(f"Key: {key}, Value shape: {label[key].shape}")
         data = label["label"]  # data.shape = (1, 15), [1,  0, -1, -1,  0,  1, -1,  0,  1,  1,  0, -1,  0,  1, -1]
+        # -1: negative, 0: neutral, 1: positive
         # If using pytorch it's best to add 1 to make the label 0 1 2
         # 👆 label["label"], you can save it
 
@@ -69,7 +65,7 @@ for key in label:
     DE_datas -> (675, 62, 265, 5)
         675 = 15 subjects * 15 trials * 3 rounds
         62 = 62 channels
-        265 = 265s
+        265 = 265s (1s, 200Hz/s)
         5 = delta, theta, alpha, beta, gamma band
 """
 DE_datas = scipy.io.loadmat('./SEED/ExtractedFeatures/correct_data.mat')
@@ -79,15 +75,7 @@ for key in DE_datas:
         data = DE_datas["data"]     # data.shape = (675, 62, 265, 5)
         # 👆 DE_datas["data"], you can save it
 
-label = scipy.io.loadmat('./SEED/ExtractedFeatures/label.mat')
-for key in label:
-    if not key.startswith('__'):
-        print(f"Key: {key}, Value shape: {label[key].shape}")
-        data = label["label"]  # data.shape = (1, 15), [1,  0, -1, -1,  0,  1, -1,  0,  1,  1,  0, -1,  0,  1, -1]
-        # If using pytorch it's best to add 1 to make the label 0 1 2
-        # 👆 label["label"], you can save it
-
-for subject in subject_round:
+for subject in SEED_subject_round:
     for rounds in range(3):  # 1 subject = 3 rounds
         DE_datas = scipy.io.loadmat(f'./SEED/ExtractedFeatures/{subject[rounds]}')
         # for key in DE_datas:
@@ -96,3 +84,11 @@ for subject in subject_round:
         for trial in range(1, 16):  # 1 round = 15 trials
             data = DE_datas[f"de_LDS{trial}"]   # data.shape = (62 channels, 1xx~2xx seconds, 5 bands)
             # 👆 DE_datas[f"de_LDS{trial}"], you can save it
+
+label = scipy.io.loadmat('./SEED/ExtractedFeatures/label.mat')
+for key in label:
+    if not key.startswith('__'):
+        print(f"Key: {key}, Value shape: {label[key].shape}")
+        data = label["label"]  # data.shape = (1, 15), [1,  0, -1, -1,  0,  1, -1,  0,  1,  1,  0, -1,  0,  1, -1]
+        # If using pytorch it's best to add 1 to make the label 0 1 2
+        # 👆 label["label"], you can save it
