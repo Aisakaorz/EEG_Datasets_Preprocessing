@@ -1,2 +1,11 @@
-/SEED/
-/SEED_IV/
+# IDE
+/.idea/
+/.vscode/
+
+# Python
+/.venv/
+__pycache__/
+*.pyc
+
+# Data
+/data/
